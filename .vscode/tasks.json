@@ -10,7 +10,15 @@
 			"problemMatcher": [],
 			"group": {
 				"kind": "test",
-				"isDefault": true
+				"isDefault": true,
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false
 			}
 		}
 	]

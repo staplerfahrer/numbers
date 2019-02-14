@@ -18,7 +18,7 @@ var oauth = require('oauth')
 	, config = JSON.parse(fs.readFileSync('config.json'))
 	, apiEndpoint = 'https://api.tradeking.com/v1'
 	, url = {accounts: () => apiEndpoint + '/accounts.json'}
-	, ally = {account: null}
+	, ally = {accounts: undefined}
 	, eContent = document.getElementById('content')
 
 //oauth.generate('GET', url.accounts, )
@@ -31,28 +31,22 @@ var consumer = new oauth.OAuth(
 	null,
 	'HMAC-SHA1')
 
-consumer.get(url.accounts(), 
-	config.oauth.oauthToken, 
-	config.oauth.oauthTokenSecret, 
-	(error, data, response) => {
-		if (error)
-			console.log(error)
-		else
-			ally.account = JSON.parse(data).response
-		
-		printAccount(ally.account)
-	})
+const pad2z = (x) => ('' + x).padStart(2, '0')
+const pad8s = (x) => ('' + x).padStart(8, ' ')
 
-// const newP = (child) => {
-// 	p = document.createElement('p')
-// 	if (child) p.appendChild(child)
-// 	return p
-// }
+const time = () => {
+	var t = new Date()
+	var hrs = pad2z(t.getHours())
+	var mins = pad2z(t.getMinutes())
+	var secs = pad2z(t.getSeconds())
+	return `${hrs}:${mins}:${secs}`
+}
+
 const text = (t) => 
 	document.createTextNode(t)
 
 const append = (node, child) =>
-	(child ? node.appendChild(child) : node)
+	(child ? node.appendChild(child).parentElement : node)
 
 const p = (child) =>
 	append(document.createElement('p'), child)
@@ -61,12 +55,34 @@ const code = (t) =>
 	append(document.createElement('pre'), 
 		append(document.createElement('code'), text(t)))
 	
-function printAccount(account) {
-	var s = account.accounts.accountsummary
+function printAccount(accounts) {
+	const reducer = (p, c) => 
+		p + `${c.displaydata.symbol}\t${pad8s(c.costbasis)}${pad8s(c.gainloss)}\n`
+
+	var s = accounts.accountsummary
 		, holdings = s.accountholdings.holding
-	const reducer = (p, c) => p + `${c.displaydata.symbol}: ${c.costbasis}, ${c.gainloss}.\n`
+
 	var hTxt = holdings.reduce(reducer, '')
-	var sumTxt = `${s.account}: ${hTxt}`
+	var sumTxt = `${s.account}\n========\n${accounts.time}\n\n${hTxt}`
 	
-	append(eContent, t(sumTxt))
+	append(eContent, code(sumTxt))
 }
+
+var requestTime = time()
+// consumer.get(url.accounts(),
+// 	config.oauth.oauthToken,
+// 	config.oauth.oauthTokenSecret,
+// 	(error, data, response) => {
+// 		if (error) {
+// 			console.log(error)
+// 		} else {
+// 			ally.accounts = JSON.parse(data).response.accounts
+// 			ally.accounts.time = requestTime
+// 			printAccount(ally.accounts)
+// 		}
+// 	})
+
+// test with a static file:
+var accountsRsp = JSON.parse(fs.readFileSync('accounts.json')).response.accounts
+accountsRsp.time = requestTime
+printAccount(accountsRsp)
