@@ -16,12 +16,10 @@
 var oauth = require('oauth')
 	, fs = require('fs')
 	, config = JSON.parse(fs.readFileSync('config.json'))
-
-var apiEndpoint = 'https://api.tradeking.com/v1'
-
-var url = {
-	accounts: () => apiEndpoint + '/accounts.json'
-}
+	, apiEndpoint = 'https://api.tradeking.com/v1'
+	, url = {accounts: () => apiEndpoint + '/accounts.json'}
+	, ally = {account: null}
+	, eContent = document.getElementById('content')
 
 //oauth.generate('GET', url.accounts, )
 var consumer = new oauth.OAuth(
@@ -37,6 +35,38 @@ consumer.get(url.accounts(),
 	config.oauth.oauthToken, 
 	config.oauth.oauthTokenSecret, 
 	(error, data, response) => {
-		var accountData = JSON.parse(data)
-		console.log(accountData.response)
+		if (error)
+			console.log(error)
+		else
+			ally.account = JSON.parse(data).response
+		
+		printAccount(ally.account)
 	})
+
+// const newP = (child) => {
+// 	p = document.createElement('p')
+// 	if (child) p.appendChild(child)
+// 	return p
+// }
+const text = (t) => 
+	document.createTextNode(t)
+
+const append = (node, child) =>
+	(child ? node.appendChild(child) : node)
+
+const p = (child) =>
+	append(document.createElement('p'), child)
+
+const code = (t) =>	
+	append(document.createElement('pre'), 
+		append(document.createElement('code'), text(t)))
+	
+function printAccount(account) {
+	var s = account.accounts.accountsummary
+		, holdings = s.accountholdings.holding
+	const reducer = (p, c) => p + `${c.displaydata.symbol}: ${c.costbasis}, ${c.gainloss}.\n`
+	var hTxt = holdings.reduce(reducer, '')
+	var sumTxt = `${s.account}: ${hTxt}`
+	
+	append(eContent, t(sumTxt))
+}
