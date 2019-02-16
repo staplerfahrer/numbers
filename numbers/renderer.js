@@ -18,7 +18,8 @@ var ally = {accounts: undefined}
 
 function holdingsLive()
 {
-	setInterval(()=> {
+	setInterval(()=> 
+	{
 		requestTime = format.time(new Date())
 		comms.get(comms.url.accounts(), data=>{
 			ally.accounts = JSON.parse(data).response.accounts
