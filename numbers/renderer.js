@@ -6,7 +6,7 @@
  */
 //#endregion
 
-require('./html.js')() // no namespace
+require('./elements.js')() // no namespace
 
 var	fs = require('fs')
 	, format = require('./format.js')
@@ -32,7 +32,8 @@ function quotesLive()
 {
 	comms.stream(comms.url.quotes(['AAPL']), data=>
 	{
-		view.setContent('stream', data)
+		requestTime = `<em>${format.time(new Date())}</em>&nbsp;`
+		view.setContent('stream', requestTime + data)
 	})
 }
 	
@@ -46,11 +47,9 @@ function printAccount(accounts)
 	view.setContent('content', tableHoldings(format, holdings))
 }
 
-
-
 if (true) 
 {
-	//holdingsLive()
+	holdingsLive()
 	quotesLive()
 } 
 else 

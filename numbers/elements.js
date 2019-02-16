@@ -1,20 +1,21 @@
-module.exports = function(){
-	
-	text = (t)=> 
+module.exports = ()=>
+{	
+	text = t=> 
 		document.createTextNode(t)
 	
 	append = (node, child)=> 
 		(child ? node.appendChild(child).parentElement : node)
 	
-	p = (child)=>
+	p = child=>
 		append(document.createElement('p'), child)
 	
-	code = (t)=>	
+	code = content=>	
 		append(document.createElement('pre'), 
-			append(document.createElement('code'), text(t)))
+			append(document.createElement('code'), text(content)))
 	
 	//better functions
-	div = (classes, children)=>
+	div =
+		(classes, children)=>
 		{
 			var d = document.createElement('div')
 			d.classList.add(...classes)
@@ -22,11 +23,13 @@ module.exports = function(){
 			return d
 		}
 
-	elems = (htmlString)=> {
-		d = document.createElement('div')
-		d.innerHTML = htmlString
-		return d.children
-	}
+	elems = 
+		(htmlString)=> 
+		{
+			d = document.createElement('div')
+			d.innerHTML = htmlString
+			return d.children
+		}
 
 	appendHtml = (node, htmlString)=>
 		node.append(...elems(htmlString))
