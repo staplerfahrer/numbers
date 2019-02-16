@@ -3,15 +3,6 @@
 	This file is required by the index.html file and will
 	be executed in the renderer process for that window.
 	All of the Node.js APIs are available in this process.
-
-	Information used:
-	https://www.ally.com/api/invest/documentation/oauth/
-	and
-	https://www.npmjs.com/package/oauth
-	and
-	https://www.ally.com/api/invest/documentation/node/
-	Key was: use oauth npm package, 
-	with version parameter '1.0A'
  */
 //#endregion
 
@@ -25,6 +16,25 @@ var	fs = require('fs')
 var ally = {accounts: undefined}
 	, requestTime = '...'
 
+function holdingsLive()
+{
+	setInterval(()=> {
+		requestTime = format.time(new Date())
+		comms.get(comms.url.accounts(), data=>{
+			ally.accounts = JSON.parse(data).response.accounts
+			ally.accounts.time = requestTime
+			printAccount(ally.accounts)
+		})
+	}, 5000)
+}
+
+function quotesLive()
+{
+	comms.stream(comms.url.quotes(['AAPL']), data=>
+	{
+		view.setContent('stream', data)
+	})
+}
 	
 function printAccount(accounts) 
 {
@@ -36,18 +46,12 @@ function printAccount(accounts)
 	view.setContent('content', tableHoldings(format, holdings))
 }
 
+
+
 if (true) 
 {
-	setInterval(() => 
-	{
-		requestTime = format.time(new Date())
-		comms.get(comms.url.accounts, data=>
-		{
-			ally.accounts = JSON.parse(data).response.accounts
-			ally.accounts.time = requestTime
-			printAccount(ally.accounts)
-		})
-	}, 5000)
+	//holdingsLive()
+	quotesLive()
 } 
 else 
 {

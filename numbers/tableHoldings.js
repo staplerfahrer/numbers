@@ -1,5 +1,5 @@
 var f
-	, cost = holding =>
+	, cost = holding=>
 		Number.parseFloat(holding.costbasis) / Number.parseFloat(holding.qty)
 	, thead = `
 		<thead>
@@ -11,11 +11,11 @@ var f
 				<th>Gain/loss</th>
 			</tr>
 		</thead>`
-	, tbody = holdings => `
+	, tbody = holdings=> `
 		<tbody>
-			${holdings.map(h => row(h)).join('\n')}
+			${holdings.map(h=> row(h)).join('\n')}
 		</tbody>`
-	, row = holding => `
+	, row = holding=> `
 		<tr>
 			<td class="mdl-data-table__cell--non-numeric">${holding.displaydata.symbol}</td>
 			<td>${f.finan(cost(holding))}</td>
@@ -24,7 +24,7 @@ var f
 			<td>${f.finan(holding.gainloss)}</td>
 		</tr>`
 
-module.exports = (format, holdingsArray) => {
+module.exports = (format, holdingsArray)=> {
 	f = format
 	table = `
 		<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
