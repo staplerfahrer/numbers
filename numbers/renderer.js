@@ -17,17 +17,13 @@
 
 require('./html.js')() // no namespace
 
-var format = require('./format.js')
+var	fs = require('fs')
+	, format = require('./format.js')
 	, view = require('./view.js')
+	, comms = require('./comms.js')
 
-var oauth = require('oauth')
-	, fs = require('fs')
-	, config = JSON.parse(fs.readFileSync('config.json'))
-	, apiEndpoint = 'https://api.tradeking.com/v1'
-	, apiStream = 'https://stream.tradeking.com/v1'
-	, url = {accounts: () => apiEndpoint + '/accounts.json'}
-	, ally = {accounts: undefined}
-	, requestTime = format.time(new Date())
+var ally = {accounts: undefined}
+	, requestTime = '...'
 
 	
 function printAccount(accounts) 
@@ -40,37 +36,17 @@ function printAccount(accounts)
 	view.setContent('content', tableHoldings(format, holdings))
 }
 
-if (false) 
+if (true) 
 {
-	var consumer = new oauth.OAuth(
-		'https://developers.tradeking.com/oauth/request_token',
-		'https://developers.tradeking.com/oauth/access_token',
-		config.oauth.consumerKey,
-		config.oauth.consumerSecret,
-		'1.0A',
-		null,
-		'HMAC-SHA1')
-
 	setInterval(() => 
 	{
 		requestTime = format.time(new Date())
-		consumer.get(
-			url.accounts(),
-			config.oauth.oauthToken,
-			config.oauth.oauthTokenSecret,
-			(error, data, response) => 
-			{
-				if (error) 
-				{
-					console.log(error)
-				} 
-				else 
-				{
-					ally.accounts = JSON.parse(data).response.accounts
-					ally.accounts.time = requestTime
-					printAccount(ally.accounts)
-				}
-			})
+		comms.get(comms.url.accounts, data=>
+		{
+			ally.accounts = JSON.parse(data).response.accounts
+			ally.accounts.time = requestTime
+			printAccount(ally.accounts)
+		})
 	}, 5000)
 } 
 else 
