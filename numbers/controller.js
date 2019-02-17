@@ -1,22 +1,36 @@
-let view = undefined
+let format = require('./format.js')
 	, model = undefined
-	, format = undefined
+	, view = undefined
 
-function refreshHoldings(data) 
+
+function updateAccounts(data) 
 {
 	let accounts = model.ally.accounts
 		, chart = model.chartSpec
 
-	accounts = data.response.accounts
+	accounts = _transformAllyAccounts(data.response.accounts)
 	accounts.time = format.time(new Date())
 	chart.data.values.push(
 		{
 			x: accounts.time
-			, y: 1
+			, y: 1//ys: accounts.accountsummary.accountholdings.holding.map(h=>h.cost)
 		})
 
 	printAccount(accounts)
 	drawChart(chart)
+}
+
+function _transformAllyAccounts(apiAccounts)
+{
+	function cost(holding) 
+	{
+		holding.cost = Number.parseFloat(holding.costbasis) / Number.parseFloat(holding.qty)
+		return holding
+	}
+
+	let transformed = apiAccounts
+	transformed.accountsummary.accountholdings.holding = transformed.accountsummary.accountholdings.holding.map(cost)
+	return transformed
 }
 
 function printAccount(accounts) 
@@ -24,7 +38,7 @@ function printAccount(accounts)
 	let s = accounts.accountsummary
 		, holdings = s.accountholdings.holding
 
-	holdingsTable = require('./tableHoldings.js')(format).buildTable // TODO refactor away, pass 'format' into contructor like here
+	holdingsTable = require('./tableHoldings.js')(format).buildTable // TODO refactor away?
 	view.setHeader(accounts.time)
 	view.setContent('content', holdingsTable(holdings))
 }
@@ -39,14 +53,12 @@ function drawChart(spec)
 		.catch(console.warn)
 }
 
-module.exports = (statelessView, masterModel, formatter)=>
+module.exports = (statelessView, masterModel)=>
 {
 	view = statelessView
 	model = masterModel
-	format = formatter
 	return {
-		refreshHoldings: refreshHoldings
+		updateAccounts: updateAccounts
 		, printAccount: printAccount
-		, drawChart: drawChart
 	}
 }

@@ -8,11 +8,10 @@
 
 require('./elements.js')() // no namespace
 
-let format = require('./format.js')
-	, comms = require('./comms.js')
+let comms = require('./comms.js')
 	, model = require('./model.js')
 	, view = require('./view.js')
-	, controller = require('./controller.js')(view, model, format)
+	, controller = require('./controller.js')(view, model)
 
 
 function liveHoldings()
@@ -21,7 +20,7 @@ function liveHoldings()
 	{
 		comms.get(
 			comms.url.accounts(), 
-			(jsonData)=>{controller.refreshHoldings(JSON.parse(jsonData))})
+			(jsonData)=>{controller.updateAccounts(JSON.parse(jsonData))})
 	}, 5000)
 }
 

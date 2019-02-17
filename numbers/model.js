@@ -5,6 +5,7 @@ let ally =
 
 let chartSpec =
 	{
+		// https://vega.github.io/vega-lite/docs/axis.html
 		"$schema": "https://vega.github.io/schema/vega-lite/v3.0.0-rc12.json",
 		"description": "A simple bar chart with embedded data.",
 		"width": 360,
