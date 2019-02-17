@@ -12,7 +12,8 @@ function createWindow () {
     height: 1080,
     webPreferences: {
       nodeIntegration: true
-    }
+    },
+    autoHideMenuBar: true
   })
 
   // and load the index.html of the app.

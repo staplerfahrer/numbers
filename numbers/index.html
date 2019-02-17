@@ -3,13 +3,9 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-		<meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data:; script-src 'self' 'unsafe-inline' data:">
 		<title>Numbers</title>
 		<link rel="stylesheet" href="./mdl/material.min.css">
 		<link rel="stylesheet" href="./mdl/fonts.css">
-		<!-- https://fonts.googleapis.com/icon?family=Material+Icons"> -->
-		<!-- <link rel="stylesheet"
-			href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en"> -->
 	</head>
 	<body>
 		<div class="mdl-layout__container">
@@ -24,12 +20,18 @@
 				</main>
 				<main id="stream" class="mdl-grid">
 				</main>
+				<main class="mdl-grid">
+					<div id="vis"></div>
+				</main>
 			</div>
 		</div>
 		<!-- <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
 			Refresh
 		</button> -->
 		<script src="./mdl/material.min.js"></script>
+		<script src="./vega/vega@4.js"></script>
+		<script src="./vega/vega-lite@3.0.0-rc12.js"></script>
+		<script src="./vega/vega-embed@3.js"></script>
 		<script>
 			require('./renderer.js')
 		</script>
