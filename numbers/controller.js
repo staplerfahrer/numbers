@@ -24,9 +24,9 @@ function printAccount(accounts)
 	let s = accounts.accountsummary
 		, holdings = s.accountholdings.holding
 
-	tableHoldings = require('./tableHoldings.js') // TODO refactor away, pass 'format' into contructor like here
+	holdingsTable = require('./tableHoldings.js')(format).buildTable // TODO refactor away, pass 'format' into contructor like here
 	view.setHeader(accounts.time)
-	view.setContent('content', tableHoldings(format, holdings))
+	view.setContent('content', holdingsTable(holdings))
 }
 
 function drawChart(spec)
@@ -35,7 +35,7 @@ function drawChart(spec)
 	// result.view provides access to the Vega View API
 	vegaEmbed('#vis', spec)
 		.then(result => {
-			console.log(result)})
+			/*console.log(result)*/})
 		.catch(console.warn)
 }
 

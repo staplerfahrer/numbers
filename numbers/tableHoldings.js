@@ -1,4 +1,4 @@
-var f
+let f
 	, cost = holding=>
 		Number.parseFloat(holding.costbasis) / Number.parseFloat(holding.qty)
 	, thead = `
@@ -23,16 +23,29 @@ var f
 			<td>${holding.qty}</td>
 			<td>${f.finan(holding.gainloss)}</td>
 		</tr>`
+	, buildTable = (holdingsArray) => 
+	{
+		table = `
+			<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+				${thead}
+				${tbody(holdingsArray)}
+			</table>`
 
-module.exports = (format, holdingsArray)=> {
-	f = format
-	table = `
-		<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-			${thead}
-			${tbody(holdingsArray)}
-		</table>`
+		return table
+	}
 
-	return table
+module.exports = (formatter)=>
+{
+	f = formatter
+	return {
+		buildTable: buildTable
+	}
 }
+
+
+
+
+
+
 
 
