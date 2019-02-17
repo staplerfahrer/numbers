@@ -33,8 +33,17 @@ function liveQuotes()
 	// })
 }
 
-if (true)
+if (false)
 {
 	liveHoldings()
 	liveQuotes()
+}
+else
+{
+	let fs = require('fs')
+	let jsonData = fs.readFileSync('./accounts.json')
+	controller.updateAccounts(JSON.parse(jsonData))
+	setInterval(() => {
+		controller.updateAccounts(JSON.parse(jsonData))
+	}, 1000)
 }

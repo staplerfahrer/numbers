@@ -10,11 +10,11 @@ function updateAccounts(data)
 
 	accounts = _transformAllyAccounts(data.response.accounts)
 	accounts.time = format.time(new Date())
-	chart.data.values.push(
-		{
-			x: accounts.time
-			, y: 1//ys: accounts.accountsummary.accountholdings.holding.map(h=>h.cost)
-		})
+	chart.data.values.push(...accounts.accountsummary.accountholdings.holding.map(h => ({
+		"symbol": h.displaydata.symbol
+		, "x": accounts.time
+		, "y": h.gainloss
+	})))
 
 	printAccount(accounts)
 	drawChart(chart)
@@ -22,14 +22,37 @@ function updateAccounts(data)
 
 function _transformAllyAccounts(apiAccounts)
 {
+	function makeFloats(holdingStrings)
+	{
+		const f = Number.parseFloat
+		let holdingFloats = holdingStrings
+		holdingFloats.costbasis = f(holdingStrings.costbasis)
+		holdingFloats.gainloss = f(holdingStrings.gainloss)
+		holdingFloats.instrument.factor = f(holdingStrings.instrument.factor)
+		holdingFloats.instrument.mult = f(holdingStrings.instrument.mult)
+		holdingFloats.instrument.putcall = f(holdingStrings.instrument.putcall)
+		holdingFloats.instrument.strkpx = f(holdingStrings.instrument.strkpx)
+		holdingFloats.marketvalue = f(holdingStrings.marketvalue)
+		holdingFloats.marketvaluechange = f(holdingStrings.marketvaluechange)
+		holdingFloats.price = f(holdingStrings.price)
+		holdingFloats.purchaseprice = f(holdingStrings.purchaseprice)
+		holdingFloats.qty = f(holdingStrings.qty)
+		holdingFloats.quote.change = f(holdingFloats.quote.change)
+		holdingFloats.quote.lastprice = f(holdingStrings.quote.lastprice)
+		holdingFloats.sodcostbasis = f(holdingStrings.sodcostbasis)
+		return holdingFloats
+	}
+
 	function cost(holding) 
 	{
-		holding.cost = Number.parseFloat(holding.costbasis) / Number.parseFloat(holding.qty)
+		holding.cost = holding.costbasis / holding.qty
 		return holding
 	}
 
 	let transformed = apiAccounts
+	transformed.accountsummary.accountholdings.holding = transformed.accountsummary.accountholdings.holding.map(makeFloats)
 	transformed.accountsummary.accountholdings.holding = transformed.accountsummary.accountholdings.holding.map(cost)
+	
 	return transformed
 }
 
