@@ -19,7 +19,7 @@ var fs = require('fs')
 	, url = 
 	{ 
 		accounts: ()=> apiEndpoint + '/accounts.json'
-		, quotes: symbolsArray=> apiStream + '/market/quotes?symbols=' + symbolsArray.join()
+		, quotes: symbolsArray=> apiStream + '/market/quotes.json?symbols=' + symbolsArray.join()
 	}
 
 var client = new oauth.OAuth(
