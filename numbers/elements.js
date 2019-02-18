@@ -14,8 +14,7 @@ module.exports = ()=>
 			append(document.createElement('code'), text(content)))
 	
 	//better functions
-	div =
-		(classes, children)=>
+	div = (classes, children)=>
 		{
 			var d = document.createElement('div')
 			d.classList.add(...classes)
@@ -23,8 +22,7 @@ module.exports = ()=>
 			return d
 		}
 
-	elems = 
-		(htmlString)=> 
+	elems = htmlString=> 
 		{
 			d = document.createElement('div')
 			d.innerHTML = htmlString

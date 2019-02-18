@@ -6,13 +6,13 @@
  */
 //#endregion
 
-require('./elements.js')() // no namespace
+// require('./elements.js')()
 
 let comms = require('./comms.js')
 	, model = require('./model.js')
 	, view = require('./view.js')
 	, controller = require('./controller.js')(view, model)
-
+	, format = require('./format.js')
 
 function liveHoldings()
 {
@@ -21,20 +21,23 @@ function liveHoldings()
 		comms.get(
 			comms.url.accounts(), 
 			(jsonData)=>{controller.updateAccounts(JSON.parse(jsonData))})
-	}, 5000)
+	}, 60000)
 }
 
 function liveQuotes()
 {
-	// comms.stream(comms.url.quotes(['AAPL']), data=>
-	// {
-	// 	let label = `<em>${format.time(new Date())}</em>&nbsp;`
-	// 	view.setContent('stream', label + data)
-	// })
+	comms.stream(comms.url.quotes(['AAPL']), data=>
+	{
+		let label = `<em>${format.time(new Date())}</em>&nbsp;`
+		view.setContent('stream', label + data)
+	})
 }
 
-if (false)
+if (true)
 {
+	let fs = require('fs')
+	let jsonData = fs.readFileSync('./accounts.json')
+	controller.updateAccounts(JSON.parse(jsonData))
 	liveHoldings()
 	liveQuotes()
 }
