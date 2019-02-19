@@ -48,8 +48,9 @@ let gainLossChart =
 		, data: {values: []}
 		, mark: {type: "point", shape: "diamond", size: 3}
 		, encoding: {
-			x: {field: "x", type: "temporal"}
-			, y: { field: "y", type: "quantitative", scale: {type: "linear", nice: true, zero: false}, axis: { title: "quoted bid $" }}
+			color: { field: "type", type: "nominal" }
+			, x: { field: "datetime", type: "temporal", timeUnit: "yearmonthdatehoursminutesseconds", axis: {title: "time", labelAngle: -45}}
+			, y: { field: "dollars", type: "quantitative", scale: {type: "linear", nice: true, zero: false}, axis: { title: "quoted bid $" }}
 		}
 	}
 
