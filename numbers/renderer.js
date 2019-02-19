@@ -8,6 +8,9 @@
 
 // require('./elements.js')()
 
+const live = true
+	, refresh = 3600
+
 let comms = require('./comms.js')
 	, model = require('./model.js')
 	, view = require('./view.js')
@@ -21,19 +24,19 @@ function liveHoldings()
 		comms.get(
 			comms.url.accounts(), 
 			(jsonData)=>{controller.updateAccounts(JSON.parse(jsonData))})
-	}, 60000)
+	}, refresh)
 }
 
 function liveQuotes()
 {
-	comms.stream(comms.url.quotes(['AAPL']), data=>
+	comms.stream(comms.url.quotes(['TSLA']), data=>
 	{
 		let label = `<em>${format.time(new Date())}</em>&nbsp;`
 		view.setContent('stream', label + data)
 	})
 }
 
-if (true)
+if (live)
 {
 	let fs = require('fs')
 	let jsonData = fs.readFileSync('./accounts.json')
@@ -48,5 +51,5 @@ else
 	controller.updateAccounts(JSON.parse(jsonData))
 	setInterval(() => {
 		controller.updateAccounts(JSON.parse(jsonData))
-	}, 1000)
+	}, refresh)
 }

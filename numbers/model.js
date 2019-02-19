@@ -22,11 +22,11 @@ let chartSpec =
 				// , { "x": "I", "y": 52 }
 			]
 		}
-		, mark: {type: "line", point: true}
+		, mark: {type: "line", point: false}
 		, encoding: {
 			color: { field: "symbol", type: "nominal" }
 			, x: { field: "x", type: "ordinal", axis: { title: "time", labelAngle: -45 } } // temporal
-			, y: { field: "y", type: "quantitative", axis: { title: "$gain/loss"} }
+			, y: { field: "y", type: "quantitative", axis: { title: "gain/loss $"} }
 		}
 		// "encoding": {
 		// 	"x":

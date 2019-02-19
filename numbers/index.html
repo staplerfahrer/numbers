@@ -6,6 +6,19 @@
 		<title>Numbers</title>
 		<link rel="stylesheet" href="./mdl/material.min.css">
 		<link rel="stylesheet" href="./mdl/fonts.css">
+		<style>
+			.demo-card-wide.mdl-card {
+				width: 600px;
+			}
+			.demo-card-wide>.mdl-card__title {
+				color: #fff;
+				height: 176px;
+				background: url('../assets/demos/welcome_card.jpg') center / cover;
+			}
+			.demo-card-wide>.mdl-card__menu {
+				color: #fff;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="mdl-layout__container">
@@ -15,13 +28,33 @@
 						<span id="header" class="mdl-layout-title">Home</span>
 					</div>
 				</header>
-				<main id="content" class="mdl-grid">
-					<div class="mdl-progress mdl-js-progress mdl-progress__indeterminate"></div>
-				</main>
 				<main class="mdl-grid">
-					<div id="vis"></div>
-				</main>
-				<main id="stream" class="mdl-grid">
+					<div class="mdl-cell mdl-cell--6-col">
+						<div id="content" class="demo-card-wide mdl-card mdl-shadow--2dp">
+						</div>
+					</div>
+					<div class="mdl-cell mdl-cell--6-col"><!-- Wide card with share menu button -->
+						<div id="vis" class="demo-card-wide mdl-card mdl-shadow--2dp">
+							<!-- <div class="mdl-card__title">
+								<h2 class="mdl-card__title-text">Welcome</h2>
+							</div> -->
+							<!-- <div class="mdl-card__supporting-text">
+								Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+								Mauris sagittis pellentesque lacus eleifend lacinia...
+							</div> -->
+							<!-- <div class="mdl-card__actions mdl-card--border">
+								<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
+									Get Started
+								</a>
+							</div> -->
+							<!-- <div class="mdl-card__menu">
+								<button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+									<i class="material-icons">share</i>
+								</button>
+							</div> -->
+						</div>
+					</div>
+					<div id="stream" class="mdl-cell mdl-cell--12-col">12</div>
 				</main>
 			</div>
 		</div>
