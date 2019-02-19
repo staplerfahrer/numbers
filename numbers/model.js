@@ -3,7 +3,7 @@ let ally =
 		accounts: undefined 
 	}
 
-let chartSpec =
+let gainLossChart =
 	{
 		// https://vega.github.io/vega-lite/docs/axis.html
 		$schema: "https://vega.github.io/schema/vega-lite/v3.0.0-rc12.json"
@@ -42,9 +42,20 @@ let chartSpec =
 		// 	"tooltip": { "field": "y", "type": "quantitative" }
 		// },
 	}
+	, quoteStreamChart = {
+		$schema: "https://vega.github.io/schema/vega-lite/v3.0.0-rc12.json"
+		, width: 360
+		, data: {values: []}
+		, mark: {type: "point", shape: "diamond", size: 3}
+		, encoding: {
+			x: {field: "x", type: "temporal"}
+			, y: { field: "y", type: "quantitative", scale: {type: "linear", nice: true, zero: false}, axis: { title: "quoted bid $" }}
+		}
+	}
 
 module.exports = 
 	{
 		ally: ally
-		, chartSpec: chartSpec
+		, gainLossChart: gainLossChart
+		, quoteStreamChart: quoteStreamChart
 	}

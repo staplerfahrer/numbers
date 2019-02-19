@@ -29,10 +29,11 @@ function liveHoldings()
 
 function liveQuotes()
 {
-	comms.stream(comms.url.quotes(['TSLA']), data=>
+	comms.stream(comms.url.quotes(['TSLA']), jsonData=>
 	{
-		let label = `<em>${format.time(new Date())}</em>&nbsp;`
-		view.setContent('stream', label + data)
+		// let label = `<em>${format.time(new Date())}</em>&nbsp;`
+		//view.setContent('stream', label + jsonData)
+		controller.streamQuotes(JSON.parse(jsonData))
 	})
 }
 

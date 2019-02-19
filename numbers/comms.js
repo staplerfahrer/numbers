@@ -61,7 +61,6 @@ var stream = (url, callBack)=>
 				response.on('data', 
 					data=>
 					{
-						console.log(data)
 						callBack(data)
 					})
 			})
