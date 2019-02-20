@@ -3,54 +3,68 @@ let ally =
 		accounts: undefined 
 	}
 
-let gainLossChart =
-	{
-		// https://vega.github.io/vega-lite/docs/axis.html
+// https://vega.github.io/vega-lite/docs/axis.html
+let gainLossChart =	{
 		$schema: "https://vega.github.io/schema/vega-lite/v3.0.0-rc12.json"
 		, description: "A simple bar chart with embedded data."
 		, width: 360
-		, data: {
-			values: [
-				// { "x": "A", "y": 28 }
-				// , { "x": "B", "y": 55 }
-				// , { "x": "C", "y": 43 }
-				// , { "x": "D", "y": 91 }
-				// , { "x": "E", "y": 81 }
-				// , { "x": "F", "y": 53 }
-				// , { "x": "G", "y": 19 }
-				// , { "x": "H", "y": 87 }
-				// , { "x": "I", "y": 52 }
-			]
-		}
+		, data: {values: []}
 		, mark: {type: "line", point: false}
-		, encoding: {
-			color: { field: "symbol", type: "nominal" }
-			, x: { field: "x", type: "ordinal", axis: { title: "time", labelAngle: -45 } } // temporal
-			, y: { field: "y", type: "quantitative", axis: { title: "gain/loss $"} }
+		, encoding: 
+		{
+			color: { 
+				field: "symbol"
+				, type: "nominal" }
+			, x: 
+			{ 
+				field: "x"
+				, type: "ordinal"
+				, axis: { 
+					title: "time"
+					, labelAngle: -45 } 
+			}
+			, y: 
+			{ 
+				field: "y"
+				, type: "quantitative"
+				, axis: { title: "gain/loss $"} 
+			}
 		}
-		// "encoding": {
-		// 	"x":
-		// 	{
-		// 		"field": "x",
-		// 		"type": "ordinal",
-		// 	},
-		// 	"y":
-		// 	{
-		// 		"field": "y",
-		// 		"type": "quantitative"
-		// 	},
-		// 	"tooltip": { "field": "y", "type": "quantitative" }
-		// },
 	}
 	, quoteStreamChart = {
 		$schema: "https://vega.github.io/schema/vega-lite/v3.0.0-rc12.json"
 		, width: 360
 		, data: {values: []}
-		, mark: {type: "point", shape: "diamond", size: 3}
+		, mark: 
+		{
+			type: "point"
+			, shape: "diamond"
+			, size: 50
+			, opacity: 0.4
+			, filled: true
+		}
 		, encoding: {
-			color: { field: "type", type: "nominal" }
-			, x: { field: "datetime", type: "temporal", timeUnit: "yearmonthdatehoursminutesseconds", axis: {title: "time", labelAngle: -45}}
-			, y: { field: "dollars", type: "quantitative", scale: {type: "linear", nice: true, zero: false}, axis: { title: "quoted bid $" }}
+			color: { 
+				field: "type"
+				, type: "nominal" }
+			, x: { 
+				field: "datetime"
+				, type: "temporal"
+				, timeUnit: "hoursminutesseconds"
+				, axis: {
+					title: "time"
+					, labelAngle: -45
+					, grid: false}}
+			, y: { 
+				field: "dollars"
+				, type: "quantitative"
+				, scale: {type: "linear", nice: true, zero: false}
+				, axis: { 
+					title: "quoted bid $"
+					, grid: false}}
+			, size: {
+				field: "size"
+			}
 		}
 	}
 
