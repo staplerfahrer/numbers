@@ -8,12 +8,13 @@ let mainWindow
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1920,
-    height: 1080,
-    webPreferences: {
+    frame: true
+    , width: 1280
+    , height: 720
+    , webPreferences: {
       nodeIntegration: true
-    },
-    autoHideMenuBar: true
+    }
+    , autoHideMenuBar: true
   })
 
   // and load the index.html of the app.
