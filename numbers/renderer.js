@@ -21,20 +21,15 @@ function liveHoldings()
 {
 	setInterval(()=>
 	{
-		comms.get(
-			comms.url.accounts(), 
-			(jsonData)=>{controller.updateAccounts(JSON.parse(jsonData))})
+		comms.get(comms.url.accounts(), 
+			data=>controller.updateAccounts(data))
 	}, refresh)
 }
 
 function liveQuotes()
 {
-	comms.stream(comms.url.quotes(['TSLA']), jsonData=>
-	{
-		// let label = `<em>${format.time(new Date())}</em>&nbsp;`
-		//view.setContent('stream', label + jsonData)
-		controller.streamQuotes(JSON.parse(jsonData))
-	})
+	comms.stream(comms.url.quotes(['TSLA']), 
+		data=>controller.streamQuotes(data))
 }
 
 if (live)

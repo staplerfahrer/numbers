@@ -97,8 +97,18 @@ function streamQuotes(quoteOrTrade)
 	}
 
 	var theThing = quoteOrTrade.hasOwnProperty('quote')
-		? { type: 'quote', datetime: quoteOrTrade.quote.datetime, dollars: Number.parseFloat(quoteOrTrade.quote.bid)}
-		: { type: 'trade', datetime: quoteOrTrade.trade.datetime, dollars: Number.parseFloat(quoteOrTrade.trade.last)}
+		? { 
+			type: 'quote'
+			, datetime: quoteOrTrade.quote.datetime
+			, dollars: Number.parseFloat(quoteOrTrade.quote.bid)
+			, size: Number.parseInt(quoteOrTrade.quote.bidsz)
+		}
+		: { 
+			type: 'trade'
+			, datetime: quoteOrTrade.trade.datetime
+			, dollars: Number.parseFloat(quoteOrTrade.trade.last)
+			, size: Number.parseInt(quoteOrTrade.trade.vl)
+		}
 	
 	let quoteStreamChart = model.quoteStreamChart
 	quoteStreamChart.data.values.push(theThing)

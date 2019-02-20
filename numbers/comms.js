@@ -43,7 +43,7 @@ var get = (url, callBack)=> client.get(
 		}
 		else 
 		{
-			callBack(data)
+			callBack(JSON.parse(data))
 		}
 	})
 
@@ -61,11 +61,26 @@ var stream = (url, callBack)=>
 				response.on('data', 
 					data=>
 					{
-						callBack(data)
+						console.log(data)
+						try 
+						{
+							splitMultiJson(data).forEach(
+								d => callBack(d))
+						} 
+						catch (error) 
+						{
+							console.log(error)	
+						}
 					})
 			})
 		strm.end()
 	}
+
+function splitMultiJson(json)
+{
+	let jsonArr = '['+json.replace(/\}\{/g, '},{')+']'
+	return JSON.parse(jsonArr)
+}
 
 module.exports = 
 {
