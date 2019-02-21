@@ -13,9 +13,8 @@ const live = true
 
 let comms = require('./comms.js')
 	, model = require('./model.js')
-	, view = require('./view.js')
+	, view = require('./view.js')(model)
 	, controller = require('./controller.js')(view, model)
-	, format = require('./format.js')
 
 function liveHoldings()
 {

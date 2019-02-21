@@ -8,25 +8,25 @@ function updateAccounts(data)
 
 	function _transformAllyAccounts(apiAccounts)
 	{
-		function makeFloats(holdingStrings)
+		function makeFloats(hldngsStr)
 		{
 			const f = Number.parseFloat
-			let holdingFloats = holdingStrings
-			holdingFloats.costbasis = f(holdingStrings.costbasis)
-			holdingFloats.gainloss = f(holdingStrings.gainloss)
-			holdingFloats.instrument.factor = f(holdingStrings.instrument.factor)
-			holdingFloats.instrument.mult = f(holdingStrings.instrument.mult)
-			holdingFloats.instrument.putcall = f(holdingStrings.instrument.putcall)
-			holdingFloats.instrument.strkpx = f(holdingStrings.instrument.strkpx)
-			holdingFloats.marketvalue = f(holdingStrings.marketvalue)
-			holdingFloats.marketvaluechange = f(holdingStrings.marketvaluechange)
-			holdingFloats.price = f(holdingStrings.price)
-			holdingFloats.purchaseprice = f(holdingStrings.purchaseprice)
-			holdingFloats.qty = f(holdingStrings.qty)
-			holdingFloats.quote.change = f(holdingFloats.quote.change)
-			holdingFloats.quote.lastprice = f(holdingStrings.quote.lastprice)
-			holdingFloats.sodcostbasis = f(holdingStrings.sodcostbasis)
-			return holdingFloats
+			let hldngsFlt = hldngsStr
+			hldngsFlt.costbasis = f(hldngsStr.costbasis)
+			hldngsFlt.gainloss = f(hldngsStr.gainloss)
+			hldngsFlt.instrument.factor = f(hldngsStr.instrument.factor)
+			hldngsFlt.instrument.mult = f(hldngsStr.instrument.mult)
+			hldngsFlt.instrument.putcall = f(hldngsStr.instrument.putcall)
+			hldngsFlt.instrument.strkpx = f(hldngsStr.instrument.strkpx)
+			hldngsFlt.marketvalue = f(hldngsStr.marketvalue)
+			hldngsFlt.marketvaluechange = f(hldngsStr.marketvaluechange)
+			hldngsFlt.price = f(hldngsStr.price)
+			hldngsFlt.purchaseprice = f(hldngsStr.purchaseprice)
+			hldngsFlt.qty = f(hldngsStr.qty)
+			hldngsFlt.quote.change = f(hldngsStr.quote.change)
+			hldngsFlt.quote.lastprice = f(hldngsStr.quote.lastprice)
+			hldngsFlt.sodcostbasis = f(hldngsStr.sodcostbasis)
+			return hldngsFlt
 		}
 
 		function cost(holding) 
@@ -42,29 +42,17 @@ function updateAccounts(data)
 		return transformed
 	}	
 
-	function drawChart(spec) {
-		// streaming: https://vega.github.io/vega-lite/tutorials/streaming.html
-		// result.view provides access to the Vega View API
-		vegaEmbed('#vis', spec)
-			.then(result => {
-				/*console.log(result)*/
-			})
-			.catch(console.warn)
-	}
-
 	let accounts = model.ally.accounts
-		, chart = model.gainLossChart
-
 	accounts = _transformAllyAccounts(data.response.accounts)
 	accounts.time = format.time(new Date())
-	chart.data.values.push(...accounts.accountsummary.accountholdings.holding.map(h => ({
-		"symbol": h.displaydata.symbol
-		, "x": accounts.time
-		, "y": h.gainloss
-	})))
-
+	let datas = accounts.accountsummary.accountholdings.holding.map(
+		h => ({
+			"symbol": h.displaydata.symbol
+			, "x": accounts.time
+			, "y": h.gainloss
+		}))
 	printAccount(accounts)
-	drawChart(chart)
+	model.gainLossData.insert(datas)
 }
 
 function printAccount(accounts) 
@@ -79,15 +67,15 @@ function printAccount(accounts)
 
 function streamQuotes(quoteOrTrade)
 {
-	function drawChart(spec) {
-		// streaming: https://vega.github.io/vega-lite/tutorials/streaming.html
-		// result.view provides access to the Vega View API
-		vegaEmbed('#stream', spec)
-			.then(result => {
-				/*console.log(result)*/
-			})
-			.catch(console.warn)
-	}
+	// function drawChart(spec) {
+	// 	// streaming: https://vega.github.io/vega-lite/tutorials/streaming.html
+	// 	// result.view provides access to the Vega View API
+	// 	vegaEmbed('#stream', spec)
+	// 		.then(result => {
+	// 			/*console.log(result)*/
+	// 		})
+	// 		.catch(console.warn)
+	// }
 
 	if (!quoteOrTrade.hasOwnProperty('quote')
 		&& !quoteOrTrade.hasOwnProperty('trade'))
@@ -110,15 +98,18 @@ function streamQuotes(quoteOrTrade)
 			, size: Number.parseInt(quoteOrTrade.trade.vl)
 		}
 	
-	let quoteStreamChart = model.quoteStreamChart
 	quoteStreamChart.data.values.push(theThing)
-	drawChart(quoteStreamChart)
+	let datas = 
+	model.quoteStreamData.insert(datas)
+	// let quoteStreamChart = model.quoteStreamChart
+	// drawChart(quoteStreamChart)
 }
 
 module.exports = (statelessView, masterModel)=>
 {
 	view = statelessView
 	model = masterModel
+
 	return {
 		updateAccounts: updateAccounts
 		, printAccount: printAccount

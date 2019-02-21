@@ -7,8 +7,8 @@ let ally =
 let gainLossChart =	{
 		$schema: "https://vega.github.io/schema/vega-lite/v3.0.0-rc12.json"
 		, description: "A simple bar chart with embedded data."
-		, width: 360
-		, data: {values: []}
+		, width: 450
+		, data: {name:"chartData"}
 		, mark: {type: "line", point: false}
 		, encoding: 
 		{
@@ -31,10 +31,11 @@ let gainLossChart =	{
 			}
 		}
 	}
+	, gainLossData = vega.changeset()
 	, quoteStreamChart = {
 		$schema: "https://vega.github.io/schema/vega-lite/v3.0.0-rc12.json"
-		, width: 360
-		, data: {values: []}
+		, width: 450
+		, data: {name:"chartData"}
 		, mark: 
 		{
 			type: "point"
@@ -67,10 +68,24 @@ let gainLossChart =	{
 			}
 		}
 	}
+	, quoteStreamData = vega.changeset()
+	// , gainLossData = {
+	// 	let datas =[{
+	// 		"symbol": "sym"
+	// 		, "x": a++
+	// 		, "y": 1
+	// 	}]
+	// 			let changeSet =
+	// 	vega.changeset()
+	// 		.insert(datas)
+
+	// }
 
 module.exports = 
 	{
 		ally: ally
 		, gainLossChart: gainLossChart
+		, gainLossData: gainLossData
 		, quoteStreamChart: quoteStreamChart
+		, quoteStreamData: quoteStreamData
 	}
