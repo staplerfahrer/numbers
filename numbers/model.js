@@ -8,6 +8,7 @@ let gainLossChart =	{
 		$schema: "https://vega.github.io/schema/vega-lite/v3.0.0-rc12.json"
 		, description: "A simple bar chart with embedded data."
 		, width: 450
+		, height: 200
 		, data: {name:"chartData"}
 		, mark: {type: "line", point: false}
 		, encoding: 
@@ -35,6 +36,7 @@ let gainLossChart =	{
 	, quoteStreamChart = {
 		$schema: "https://vega.github.io/schema/vega-lite/v3.0.0-rc12.json"
 		, width: 450
+		, height: 200
 		, data: {name:"chartData"}
 		, mark: 
 		{
@@ -47,7 +49,7 @@ let gainLossChart =	{
 		, encoding: {
 			color: { 
 				field: "type"
-				, type: "nominal" }
+				, type: "nominal"}
 			, x: { 
 				field: "datetime"
 				, type: "temporal"
@@ -59,13 +61,16 @@ let gainLossChart =	{
 			, y: { 
 				field: "dollars"
 				, type: "quantitative"
-				, scale: {type: "linear", nice: true, zero: false}
+				, scale: {
+					type: "linear"
+					, nice: true
+					, zero: false}
 				, axis: { 
 					title: "quoted bid $"
 					, grid: false}}
 			, size: {
 				field: "size"
-			}
+				, type: "quantitative"}
 		}
 	}
 	, quoteStreamData = vega.changeset()

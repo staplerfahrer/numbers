@@ -67,42 +67,32 @@ function printAccount(accounts)
 
 function streamQuotes(quoteOrTrade)
 {
-	// function drawChart(spec) {
-	// 	// streaming: https://vega.github.io/vega-lite/tutorials/streaming.html
-	// 	// result.view provides access to the Vega View API
-	// 	vegaEmbed('#stream', spec)
-	// 		.then(result => {
-	// 			/*console.log(result)*/
-	// 		})
-	// 		.catch(console.warn)
-	// }
-
-	if (!quoteOrTrade.hasOwnProperty('quote')
-		&& !quoteOrTrade.hasOwnProperty('trade'))
+	function ok(x)
 	{
-		console.log(quoteOrTrade)
-		return
+		return (x.hasOwnProperty('quote')
+			|| x.hasOwnProperty('trade'))
+	}	
+
+	function theThing(qt) 
+	{
+		return (qt.hasOwnProperty('quote')
+			? {
+				type: 'quote'
+				, datetime: qt.quote.datetime
+				, dollars: Number.parseFloat(qt.quote.bid)
+				, size: Number.parseInt(qt.quote.bidsz)
+			}
+			: {
+				type: 'trade'
+				, datetime: qt.trade.datetime
+				, dollars: Number.parseFloat(qt.trade.last)
+				, size: Number.parseInt(qt.trade.vl)
+			})
 	}
 
-	var theThing = quoteOrTrade.hasOwnProperty('quote')
-		? { 
-			type: 'quote'
-			, datetime: quoteOrTrade.quote.datetime
-			, dollars: Number.parseFloat(quoteOrTrade.quote.bid)
-			, size: Number.parseInt(quoteOrTrade.quote.bidsz)
-		}
-		: { 
-			type: 'trade'
-			, datetime: quoteOrTrade.trade.datetime
-			, dollars: Number.parseFloat(quoteOrTrade.trade.last)
-			, size: Number.parseInt(quoteOrTrade.trade.vl)
-		}
-	
-	quoteStreamChart.data.values.push(theThing)
-	let datas = 
+	quoteOrTrade.filter(x=>!ok(x)).map(x=>console.log(x))
+	let datas = quoteOrTrade.filter(ok).map(theThing)
 	model.quoteStreamData.insert(datas)
-	// let quoteStreamChart = model.quoteStreamChart
-	// drawChart(quoteStreamChart)
 }
 
 module.exports = (statelessView, masterModel)=>

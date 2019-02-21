@@ -64,8 +64,7 @@ var stream = (url, callBack)=>
 						console.log(data)
 						try 
 						{
-							splitMultiJson(data).forEach(
-								d => callBack(d))
+							callBack(splitMultiJson(data))
 						} 
 						catch (error) 
 						{

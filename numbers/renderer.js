@@ -21,14 +21,14 @@ function liveHoldings()
 	setInterval(()=>
 	{
 		comms.get(comms.url.accounts(), 
-			data=>controller.updateAccounts(data))
+			controller.updateAccounts)
 	}, refresh)
 }
 
 function liveQuotes()
 {
-	comms.stream(comms.url.quotes(['TSLA']), 
-		data=>controller.streamQuotes(data))
+	comms.stream(comms.url.quotes(['TSLA','ALLY']), 
+		controller.streamQuotes)
 }
 
 if (live)
